@@ -1,0 +1,93 @@
+Agregar las claves SSH:
+
+1- Crear las claves: 'ssh-keygen -t rsa -b 4096 -C "gmorey@gmail.com"'. Esto da como resultado un hash SHA256, anotarlo. Cada vez que agreguemos la parte publica debe dar este valor en el extremo publico.
+2- Start SSH Agent: eval "$(ssh-agent -s)"
+3- Agregar la parte privada al cliente local en la laptop: "ssh-add ~/.ssh/id_rsa"
+4- La clave Publica agregarla en la cuenta GitHub:copiar y pegar, ver que sea la misma SHA256
+
+
+Clonar repositorio localmente:
+"git clone <repository-url>"
+por ejemplo: "git clone git@github.com:moreyg/Tiker-Monster.git"
+
+El comando "git status" nos da el STATUS LOCAL, Si agregamos o sacamos archivos locales nos dice la situacion y sugiere que hacer. Si cambia halgo en el repositorio central, GitHub, no se entera si no le damos la orden que mire que paso el el central. Ver mas adelante.
+
+Una vez que tengamos el repositorio clonado podemos trabajar. Si creamos archivos nuevos hay que agregarlos al github, no se agragan solo al crearlos en los directorios del repositorio, hay que dar la orden explicita, que puede ser general o especifica, por ejemplo:
+git add .         -- Esto agrega todo lo nuevo
+git add filename  -- Esto agrega filename
+
+Para borrar un archivo:
+
+git rm filename
+
+Despues de agregar o borrar hay que "comitear" y "pushear" para pasar los cambios al centro.
+
+git commit -m "MENSAJE DEL COMMIT"
+git push origin <your-branch-name>
+
+Asi actualizamos el sitio central en GitHub.
+
+El comando "git add -u" hace todas las odificaciones locales, incluso lo borrado.
+moreyg/Tiker-Monster/blob/main/README.md
+
+
+CODIGO UTILIZADO 
+# Un request GET
+r = requests.get('https://httpbin.org/get')
+print("El contenido del GET fue: ", type(r))
+print(r.content)
+print(r.encoding)
+print(r.json())
+# Un request POST
+#r = requests.post('https://httpbin.org/post')
+#print("El contenido del POST fue:\n", r.content)
+
+mport requests
+import json
+r=requests.get('https://httpbin.org/get')
+
+data_dir = r.json()
+print(r.encoding)
+print(data_dir)
+print(type(data_dir))
+print("\n")
+print(type(data_dir))
+print("\n")
+LOOP de impresion de dict (DICTIONARY)
+for keys,values in data_dir.items():
+    print("Keys: ",keys)
+    print("Values: ",values)
+    print("\n")
+
+Esta forma es muy buena y clara y simple. import json
+r = requests.get('https://httpbin.org/get')
+data_dir = r.json()
+print(json.dumps(data_dir, indent = 4))
+
+print("\n")
+# Un request POST
+#r = requests.post('https://httpbin.org/post')
+#print("El contenido del POST fue:\n", r.content)
+
+FIN:
+import requests
+import json
+r = requests.get('https://httpbin.org/get')
+data_dir = r.json()
+print(json.dumps(data_dir, indent = 4))
+
+OTRO:
+import requests
+## Request GET al archivo RAW del readme del repositorio de este curso.
+r = requests.get("https://raw.githubusercontent.com/moreyg/Python-Curso-1/main/README.md")
+print(r.text[:500])
+
+## Guardo los contenidos en un archivo
+with open("readme.md", "wb") as fp:
+    fp.write(r.content)
+
+El RAW tra el archivo, el siguiente trae la pagina web: Cambia la direccion donde apunta el get:
+r = requests.get("https://github.com/ITBA-Python/Certificacion-Profesional-Python/blob/main/README.md"
+
+
+

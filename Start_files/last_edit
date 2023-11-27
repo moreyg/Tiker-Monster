@@ -1,0 +1,56 @@
+# API de perros
+import requests
+import json
+def next_link(obj):
+    pass  
+#https://stackoverflow.com/questions/15785719/how-to-print-a-dictionary-line-by-line-in-python
+def dumpclean(obj):
+    print ("Objeto recibido type is: {}".format(type(obj)))
+    print ("Objeto recibido long is: {}".format(len(obj)))
+    print ("+")
+    if isinstance(obj, dict):
+        for k, v in obj.items():
+            if hasattr(v, '__iter__'):
+                print (k)
+                dumpclean(v)
+            else:
+                print ('%s : %s' % (k, v))
+    elif isinstance(obj, list):
+        for v in obj:
+            if hasattr(v, '__iter__'):
+                :dumpclean(v)
+            else:
+                print (v)
+    else:
+        print (obj)
+
+db_data = [] #Lista vacia ya que necesito varios GET para tener toda la info
+link = "https://dogapi.dog/api/v2/breeds" #Link inicial
+has_next_data_link=True
+
+#PRIMER PEDIDO, LUEGO ITERO SOBRE "NEXT"
+while(has_next_data_link):
+    r = requests.get(link)
+    datos =r.json()
+    #print(json.dumps(datos, indent = 4)) #Imprime objeto JSON claramente para analisis
+    db_data.extend(datos["data"])
+    links=datos["links"]
+    next_link(links,link)
+
+    link_next = links["next"]
+    has_next_data_link = links["has_next"]
+    #print("Has next data: {}".format(has_next_data_link))
+r = requests.get(link_next)
+datos =r.json()
+db_data.extend(datos["data"])
+
+#r = requests.get(link_last)
+#datos =r.json()
+#db_data.extend(datos["data"])
+#Debug info
+print(type(db_data))
+print(len(db_data))
+
+#ver proxima fuente de datos, si no es la ultima
+links = datos["links"]
+dumpclean(links)
